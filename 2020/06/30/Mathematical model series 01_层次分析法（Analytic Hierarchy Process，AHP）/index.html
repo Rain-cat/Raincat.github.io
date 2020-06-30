@@ -219,20 +219,19 @@
 <li><p><strong>建立层次结构模型（本文以旅游问题为例）</strong></p>
 <p>  该过程需要对所遇到的问题进行基本的认识，即<strong>找到目标或解决的问题Z、影响因素或者决策准则Ai以及决策备选方案Bn</strong>，依次设为最高层、中间层和最底层。</p>
 <p>  本文旅游目的地选择为Z，景色、费用、居住、饮食、旅途为5个影响因素，分别设为A1、A2、A3、A4、A5，α星球、β星球、γ星球为3个备选方案，分别设为B1、B2、B3。</p>
-<p>  <img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1ggaktiut8rj30ab07u75e.jpg" alt=""></p>
 </li>
 </ul>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1ggaktiut8rj30ab07u75e.jpg" alt=""></p>
 <pre><code>此时，我们已经将所要解决的问题转化成了数学结构模型，可以进行下一步，**构造成对比较矩阵**。</code></pre><ul>
 <li><p><strong>构造成对比较矩阵</strong></p>
 <p>  该过程对于整个算法至关重要。</p>
 <p>  <strong>成对比较矩阵是对于该层次相对于上层次的重要程度而言的</strong>，即Ai一层对于Z一层的重要程度构成成对比较矩阵P（由于上层只有一个目标，则此处仅有一个矩阵P1），Bn一层对于Ai一层的重要程度构成成对比较矩阵Pn（由于上层有5个影响因素，则此时有5个矩阵，P1、P2、P3、P4、P5）。</p>
 </li>
 </ul>
-<pre><code>成对比较矩阵，顾名思义是两两进行比较，具体值的大小参考成对比较阵标度表。
-
-![](https://wx3.sinaimg.cn/mw1024/006CJtF1ly1ggaky2cipoj30w00j7qj6.jpg)
-
-下面以矩阵P为例进行解释：</code></pre><p>   P=</p>
+<p>   成对比较矩阵，顾名思义是两两进行比较，具体值的大小参考成对比较阵标度表。</p>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1ggaky2cipoj30w00j7qj6.jpg" alt=""></p>
+<p>   下面以矩阵P为例进行解释：</p>
+<p>   P=</p>
 <pre><code>[   1,  1/2,  4,     3,      3;
 
     2,  1  ,  7,     5,      5;
@@ -246,9 +245,8 @@
 <p>原则上，该矩阵应由专家评委给出，但<strong>在实际数模大赛中，需要自行判断</strong>！</p>
 <p>它的重要性体现在哪呢？</p>
 <p>由前面我们知道，这个算法的最终决策准则是根据权重来的，而这个矩阵就是算法中需要进行计算的原始数据，需要我们自行填入，所以，一招不慎，满盘皆输啊！</p>
-<h2 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code:"></a>Source code:</h2><pre><code>disp(&apos;请输入判断矩阵A（n阶）&apos;);
-
-A=input(&apos;A=&apos;);
+<h2 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code:"></a>Source code:</h2><p>`    disp(‘请输入判断矩阵A（n阶）’);</p>
+<pre><code>A=input(&apos;A=&apos;);
 
 [n,n]=size(A);
 
@@ -308,7 +306,7 @@ disp(&apos;CI=&apos;);disp(CI);
 
 disp(&apos;CR=&apos;);disp(CR);
 
-end</code></pre><h2 id="Operation-result-analysis"><a href="#Operation-result-analysis" class="headerlink" title="Operation result analysis:"></a>Operation result analysis:</h2><p>对源代码进行运行之后的结果如图所示：</p>
+end`</code></pre><h2 id="Operation-result-analysis"><a href="#Operation-result-analysis" class="headerlink" title="Operation result analysis:"></a>Operation result analysis:</h2><p>对源代码进行运行之后的结果如图所示：</p>
 <p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1ggaktiw9osj30nl0eu0st.jpg" alt=""></p>
 <p><strong>图中输出数据0.2636  0.4758  0.0538  0.0981  0.1087是该算法的重要数据，分别为影响因素景色、费用、居住、饮食、旅途对目的地选择的影响权重。</strong></p>
 <p>同理，输入成对比较矩阵P1、P2、P3、P4、P5之后，得到三个选择地分别对五个影响因素的影响权重。得到结果如下如所示：</p>
@@ -322,9 +320,9 @@ end</code></pre><h2 id="Operation-result-analysis"><a href="#Operation-result-an
 <p>至此，该算法的初步认识结束啦~<br>Tags:</p>
 <hr>
 <p>*<em>Matlab2016b，Mathematical model，Analytic Hierarchy Process（AHP） *</em></p>
-<h2 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h2><pre><code>**本文所有内容均来自笔者对于小石老师关于数学建模课程的学习笔记，如有需要，请自行购买课程**
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h2><p><strong>本文所有内容均来自笔者对于小石老师关于数学建模课程的学习笔记，如有需要，请自行购买课程</strong></p>
+<p>如有错误，欢迎大家批评指正！</p>
 
- 如有错误，欢迎大家批评指正！</code></pre>
         </div>
 
         
