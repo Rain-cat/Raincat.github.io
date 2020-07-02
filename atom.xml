@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-06-30T13:12:08.536Z</updated>
+  <updated>2020-07-02T15:23:17.541Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mathematical model series 02_多属性决策模型（Multiple-attribute Decision Making Model)</title>
+    <link href="http://yoursite.com/2020/07/02/Mathematical%20model%20series%2002_%E5%A4%9A%E5%B1%9E%E6%80%A7%E5%86%B3%E7%AD%96%E6%A8%A1%E5%9E%8B%EF%BC%88Multiple-attribute%20Decision%20Making%20Model)/"/>
+    <id>http://yoursite.com/2020/07/02/Mathematical%20model%20series%2002_%E5%A4%9A%E5%B1%9E%E6%80%A7%E5%86%B3%E7%AD%96%E6%A8%A1%E5%9E%8B%EF%BC%88Multiple-attribute%20Decision%20Making%20Model)/</id>
+    <published>2020-07-02T14:03:47.028Z</published>
+    <updated>2020-07-02T15:23:17.541Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Multiple-attribute-Decision-Making-Model"><a href="#Multiple-attribute-Decision-Making-Model" class="headerlink" title="Multiple-attribute Decision Making Model"></a>Multiple-attribute Decision Making Model</h2><p>title: Mathematical model series 02_多属性决策模型（Multiple-attribute Decision Making Model）<br>date: 2020-07-02 22:03:47</p><h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword:"></a>Foreword:</h2><p>全国研究生数学建模竞赛由教育部学位办与研究生教育发展中心主办，是学位中心主办的“全国研究生创新实践系列活动”主题赛事之一。</p><p>笔者为了准备该项赛事，特意开设这个数模学习系列，督促个人学习。</p><h2 id="Basic-Information"><a href="#Basic-Information" class="headerlink" title="Basic Information:"></a>Basic Information:</h2><p>多属性决策是现代决策科学的一个重要组成部分，可用于工程设计、经济、管理和军事等诸多领域，如<strong>投资决策、项目评估、维修服务、武器系统性能评价、工厂选址、投标招标、产业部门发展排序和经济效益综合评价</strong>等。从它的应用举例上我们可以看出，其应用的场合多为<strong>对一组（有限个）备选方案进行排序或者择优</strong>。这句话是不是乍一看像是个废话？确实，决策就是从备选方案中进行择优选择，我们上一讲的层次分析法也是对备选方案进行择优选择，那相比较于上一讲的层次分析法，多属性决策的不同在哪里呢？继续看！</p><h2 id="Algorithm-flow"><a href="#Algorithm-flow" class="headerlink" title="Algorithm flow:"></a>Algorithm flow:</h2><ul><li><p><strong>获取决策信息</strong></p><p>  决策信息一般包括两方面内容：<strong>属性权重和属性值</strong>（属性值主要有三种形式：实数、区间数和语言）。这里的<strong>属性值说白了就是我在某一个量纲下赋予不同备选方案同一个属性的数值大小</strong>，也可以<strong>再说白点就是这个属性的得分</strong>吧。属性权重，权重！再次出现！层次分析法中，权重是决定方案的关键因素，这里，它也很重要，也是能够决定最终排序的关键因素，怎么决定呢？继续看继续看~</p><p>  <strong>首先，我们要获取属性值。</strong></p><p>  属性值的初始值一般是给出的（因为这就是对方案进行某个属性的打分），所以不做讨论。</p><p>  <strong>随后，对属性值进行归一化处理。</strong></p><p>  属性类型一般有效益型、成本型、固定型、偏离型、区间型、偏离区间型等。其中，效益型是指属性值越大越好，成本型相反；固定型是指离固定值越近越好，偏离型相反；区间型是指越接近给定区间越好，偏离区间型相反。</p><p>  在实际问题中，由于物理量纲不同，在信息集结时会造成权重时同一个量纲但是属性值不是同一个量纲，进而影响最终的决策。</p></li></ul><pre><code>*比如，A属性满分100，B属性满分为1，那么在进行集结时需要乘以相应的权重，但此时，就算B属性给了满分1，在整个项目中也显得微乎其微甚至可以忽略，从而影响结果。*对此，我们需要对属性值进行归一化处理，根据不同类型，我们有不同的归一化算法。**效益型：**![](https://images2018.cnblogs.com/blog/1226694/201807/1226694-20180711221443329-1091730485.gif)**成本型：**![](https://images2018.cnblogs.com/blog/1226694/201807/1226694-20180711222141687-399558068.gif)**固定型：**![](https://images2018.cnblogs.com/blog/1226694/201807/1226694-20180711222953069-708788758.gif)**偏离型：**![](https://images2018.cnblogs.com/blog/1226694/201807/1226694-20180711222804394-629204973.gif)**区间型：**![](https://images2018.cnblogs.com/blog/1226694/201807/1226694-20180711224501361-516685121.gif)**偏离区间型：**rij=1-rij（区间型）**最后，获取属性权重。**属性权重的获取与上一讲层次分析法中一致，即利用成对比较矩阵来获取五个属性的权重，此处不再赘述，详情请参考上一讲。</code></pre><ul><li><p><strong>对决策信息进行集结并对方案进行排序和择优</strong></p><p>  当我们获得了属性权重和归一化后的属性值，就可以进行集结和排序了。   </p><p>  <strong>首先，信息集结。</strong></p><p>  信息集结的方法很多，但是我们主要学习的是较为常用的<strong>加权算术平均算子WAA</strong>。</p><p>  设函数<em>WAA：Rn→R，（a1，a2，……，an）是一组给定的数据，若WAAω（a1，a2，……，an）=∑ωjaj（其中下标j由1到n）</em></p><p>  其中，<em>ω=（ω1，ω2，……，ωn）T<em>（T为上标）是数据组</em>（a1，a2，……，an）*的权重向量，且取值为</em>[0,1] 1≤j≤n <em>所有ω的和为1，R为实数集，因此称函数WAA为*</em>加权算术平均算子（Weighted arithmetic averaging（WAA）operator）**。</p><p>  式子看起来一团乱麻，但事实上非常简单！</p><p>  *比如：火影学院的教学水平评估中有4项指标：办学知道思想、学风、教学效果和特色项目，得分分别为A、B、C、D，4项指标的权重分别为a、b、c、d，构成向量ω，则加权平均综合得分即为：</p><p>  WAAω（A、B、C、D）=A×a+B×b+C×c+D×d*</p><p>  <strong>最后，对每个备选方案计算的WAA进行排序，得到最优方案选择序列。</strong></p></li></ul><h2 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code:"></a>Source code:</h2><p> <em>本讲所涉及的代码仅有权重计算的代码，如需，请从笔者博客首页移步至github，代码放置在“Code_math”仓库中。</em></p><h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h2><p><img src="https://img-blog.csdnimg.cn/20190129135438893.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2F6aHVvcWlu,size_16,color_FFFFFF,t_70" alt=""></p><p><img src="https://img-blog.csdnimg.cn/20190129135458443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2F6aHVvcWlu,size_16,color_FFFFFF,t_70" alt=""></p><p><img src="https://img-blog.csdnimg.cn/20190129135518677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2F6aHVvcWlu,size_16,color_FFFFFF,t_70" alt=""></p><p><img src="https://img-blog.csdnimg.cn/20190129135535797.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2F6aHVvcWlu,size_16,color_FFFFFF,t_70" alt=""></p><p>（图片均来自小石老师课堂示例，侵删）</p><p>通过计算，企业1-4的得分分别为：0.8 0.79 0.89 0.85</p><p>所以，应该投资企业3，随后考虑企业4.</p><p>至此，该算法的初步认识结束啦~</p><p>不知道大家现在能不能领悟到层次分析法和该方法的异同了，就我个人而言的话，只可意会不可言传？hhhhh</p><h2 id="Tags"><a href="#Tags" class="headerlink" title="Tags:"></a>Tags:</h2><p>*<em>Matlab2016b，Mathematical model，Multiple-attribute Decision Making Model *</em></p><h2 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h2><p><strong>本文所有内容均来自笔者对于小石老师关于数学建模课程的学习笔记，如有需要，请自行购买课程</strong></p><p>如有错误，欢迎大家批评指正！</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;Multiple-attribute-Decision-Making-Model&quot;&gt;&lt;a href=&quot;#Multiple-attribute-Decision-Making-Model&quot; class=&quot;headerlink&quot; title=&quot;Multiple-att
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Mathematical model series 01_层次分析法（Analytic Hierarchy Process，AHP）</title>
