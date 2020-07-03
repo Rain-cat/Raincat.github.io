@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Rain">
+
+
+    <meta name="subtitle" content="Life is like a box of colorful chocolates, you never know what the next one is.">
+
+
+    <meta name="description" content="There are sunshine, rain, cats and codes in life.">
+
+
+    <meta name="keywords" content="Raincatshine">
+
+
+<title>Mathematical model series 03_灰色预测模型（Gray Forecast Model，GFM ） | Raincatshine&#39;s  Tree Hole</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Raincatshine's  Tree Hole" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Raincatshine&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Raincatshine&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Mathematical model series 03_灰色预测模型（Gray Forecast Model，GFM ）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Rain</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 3, 2020&nbsp;&nbsp;18:42:48</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Gray-Forecast-Model（GFM）"><a href="#Gray-Forecast-Model（GFM）" class="headerlink" title="Gray Forecast Model（GFM）"></a>Gray Forecast Model（GFM）</h2><p>title: Mathematical model series 03_灰色预测模型（Gray Forecast Model，GFM）</p>
+<p>date: 2020-07-03 18:42:48</p>
+<h2 id="Foreword"><a href="#Foreword" class="headerlink" title="Foreword:"></a>Foreword:</h2><p>全国研究生数学建模竞赛由教育部学位办与研究生教育发展中心主办，是学位中心主办的“全国研究生创新实践系列活动”主题赛事之一。</p>
+<p>笔者为了准备该项赛事，特意开设这个数模学习系列，督促个人学习。</p>
+<h2 id="Basic-Information"><a href="#Basic-Information" class="headerlink" title="Basic Information:"></a>Basic Information:</h2><p><strong>灰色预测模型（Gray Forecast Model，GFM）</strong>是基于<strong>少量、不完全信息</strong>的灰色系统，建立的一种数学预测模型，即<strong>对灰色系统的预测</strong>。首先我们来解释一下灰色系统。</p>
+<p>灰色系统是黑箱概念的一种推广。<strong>我们把既含有已知信息，又含有未知信息的系统成为灰色系统</strong>。如果我们考虑极端情况，也就是，整个系统全是已知信息，那么就称其为白色系统，那么相反，整个系统全是未知信息，那么就称其为黑色系统。</p>
+<p>根据马克思主义哲学的思想，人世间万物相联，而灰色预测模型就是利用客观事物在时间上的发展关系，去得到我们所需要了解的“下一步”。</p>
+<p>灰色系统理论是由华中理工大学邓聚龙教授于1982年提出并加以发展的。目前，该理论已成为我国社会、经济、科学技术等诸多领域在进行<strong>预测、决策、评估、规划控制、系统分析与建模时使用的重要方法之一</strong>。</p>
+<p>该方法，是我目前为止（hhhh其实也就第三个），接触的理论上式子最多的，但是好在我们目前只需要大概了解理论内容，然后会自行修改必要代码即可，所以接下来涉及到的理论计算，我都只是放上具体的式子。</p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features:"></a>Features:</h2><ol>
+<li><strong>用灰色数学处理不确定量，使之量化</strong></li>
+<li><strong>充分利用已知信息寻求系统的运动规律</strong></li>
+<li><strong>灰色系统理论能处理贫信息系统</strong>（也就是信息量比较少的系统）</li>
+</ol>
+<h2 id="Important-process"><a href="#Important-process" class="headerlink" title="Important process:"></a>Important process:</h2><p>该算法的重点有两个：<strong>灰色生成和GM（1，1）模型</strong></p>
+<p><strong>Part Ⅰ：灰色生成</strong></p>
+<p>生成，即将原始数据列中的数据，<strong>按某种要求作数据处理</strong>。</p>
+<p>世间万物，错综复杂，很难直观地去发现其内在规律，灰色生成的目的就是企图从杂乱无章的表象中去发现内在的规律。</p>
+<p>常用的灰色系统生成方式有：<strong>累加生成</strong>、累减生成、均值生成、级比生成等，本内容以累加生成为主。</p>
+<p>累加生成，即通过数列间各时刻数据的依个累加以后得到新的数据与数列。累加前的数列称原始数列，累加后的数列称为生成数列，该生成是使系统由灰变白的一种方法，该生成数列能够看出灰量积累过程的发展态势，使离乱的原始数据中蕴含的积分特性或规律加以显化。</p>
+<p>说白了，<strong>累加生成就是生成数列X1（i）为原始数列X0前i项和，其中1≤i≤n，n为总的数据量</strong>。</p>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1gge13c37kqj30wa0jd76m.jpg" alt=""></p>
+<p><strong>Part Ⅱ：模型GM（1，1）</strong></p>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1gge13bz0ukj30w30jmtbw.jpg" alt=""></p>
+<p><img src="https://wx1.sinaimg.cn/mw1024/006CJtF1ly1gge13bz59sj30vp0jrq58.jpg" alt=""></p>
+<p><img src="https://wx4.sinaimg.cn/mw1024/006CJtF1ly1gge13byrz1j30w60jrta6.jpg" alt=""></p>
+<p><img src="https://wx1.sinaimg.cn/mw1024/006CJtF1ly1gge13bz0wvj30vr0hiq48.jpg" alt=""></p>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1gge13bzk3gj30vg0irmy3.jpg" alt=""></p>
+<p>预测值的求解：</p>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1gge13c2rlvj30v605zt8r.jpg" alt=""></p>
+<p>在使用GM（1，1）模型时我们应对其进行精度检测，以此来判定该模型是否能够用来作预测。灰色模型的精度检验一般有三种方法：相对误差大小检验法、关联度检验法和<strong>后验差检验法</strong>。下面我们介绍代码中使用的后验差检验法。</p>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1gge13c2btnj30uz06r3zd.jpg" alt=""></p>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1gge13c3jsaj30vw0iygne.jpg" alt=""></p>
+<p>计算后验差比为：<strong>C=S2/S1</strong></p>
+<p><strong>S1表示原始数据方差</strong>，即原始数据离散程度；<strong>S2表示残方差</strong>，即残差离散程度；<strong>C越小越好</strong>，即S1越大且S2越小，说明尽管原始数据很离散，但是模型所得计算值与实际值之差并不太离散。其中，根据C值得大小来进行精度等级评价，参照表如下图：</p>
+<p><img src="https://wx2.sinaimg.cn/mw1024/006CJtF1ly1gge13bywqmj30q60e740k.jpg" alt=""></p>
+<h2 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code:"></a>Source code:</h2><pre><code>function []=greymodel(y)
+
+% 本程序主要用来计算根据灰色理论建立的模型的预测值。
+
+% 应用的数学模型是 GM(1,1)。
+
+% 原始数据的处理方法是一次累加法。
+
+y=input(&apos;请输入数据 &apos;);
+
+n=length(y);
+
+yy=ones(n,1);
+
+yy(1)=y(1);
+
+for i=2:n
+
+    yy(i)=yy(i-1)+y(i);
+
+end
+
+B=ones(n-1,2);
+
+for i=1:(n-1)
+
+    B(i,1)=-(yy(i)+yy(i+1))/2;
+
+    B(i,2)=1;
+
+end
+
+BT=B&apos;;
+
+for j=1:n-1
+
+YN(j)=y(j+1);
+
+end
+
+YN=YN&apos;;
+
+A=inv(BT*B)*BT*YN;
+
+a=A(1);
+
+u=A(2);
+
+t=u/a;
+
+i=1:n+2;
+
+yys(i+1)=(y(1)-t).*exp(-a.*i)+t;
+
+yys(1)=y(1);
+
+for j=n+2:-1:2
+
+ys(j)=yys(j)-yys(j-1);
+
+end
+
+x=1:n;
+
+xs=2:n+2;
+
+yn=ys(2:n+2);
+
+plot(x,y,&apos;^r&apos;,xs,yn,&apos;*-b&apos;);
+
+det=0;
+
+
+sum1=0;
+
+sumpe=0;
+
+for i=1:n
+
+sumpe=sumpe+y(i);
+
+end
+
+pe=sumpe/n;
+
+for i=1:n;
+
+sum1=sum1+(y(i)-pe).^2;
+
+end
+
+s1=sqrt(sum1/n);
+
+sumce=0;
+
+for i=2:n
+
+sumce=sumce+(y(i)-yn(i));
+
+end
+
+ce=sumce/(n-1);
+
+sum2=0;
+
+for i=2:n;
+
+sum2=sum2+(y(i)-yn(i)-ce).^2;
+
+end
+
+s2=sqrt(sum2/(n-1));
+
+c=(s2)/(s1);
+
+disp([&apos;后验差比值为：&apos;,num2str(c)]);
+
+if c&lt;0.35
+
+disp(&apos;系统预测精度好&apos;)
+
+else if c&lt;0.5
+
+    disp(&apos;系统预测精度合格&apos;)
+
+else if c&lt;0.65
+
+        disp(&apos;系统预测精度勉强&apos;)
+
+    else
+
+        disp(&apos;系统预测精度不合格&apos;)
+
+    end
+
+end
+
+end
+
+
+disp([&apos;下个拟合值为 &apos;,num2str(ys(n+1))]);
+
+disp([&apos;再下个拟合值为&apos;,num2str(ys(n+2))]);</code></pre><h2 id="Operation-result-analysis"><a href="#Operation-result-analysis" class="headerlink" title="Operation result analysis:"></a>Operation result analysis:</h2><p>对源代码进行运行之后的结果如图所示：</p>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1gge2cd08qxj30m50kpab9.jpg" alt=""></p>
+<p>由结果可看出，其C值很小，模型精度符合要求。出图中，蓝色为预测曲线，红色三角形为实际值，可以直观地看出整体偏差是比较小的。</p>
+<p><img src="https://wx3.sinaimg.cn/mw1024/006CJtF1ly1gge2cd00ddj30k50l2dgv.jpg" alt=""></p>
+<p>在这里，我们用的数据更少，而且离散程度比较大，但是模型拟和的情况还是可以哒，C值也比较小，模型精度满足要求。这么少的数据得到这种精确度，总的来说这个预测还是很可的！</p>
+<p>至此，该算法的初步认识结束啦~</p>
+<p>虽然感觉越来越水了，但是该有的知识点我应该没落吧<del>嘿嘿，当作模型初步了解，尚可尚可啦</del><br>Tags:</p>
+<hr>
+<p>*<em>Matlab2016b，Mathematical model，Analytic Hierarchy Process（AHP） *</em></p>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h2><p><strong>本文所有内容均来自笔者对于小石老师关于数学建模课程的学习笔记，如有需要，请自行购买课程</strong></p>
+<p>如有错误，欢迎大家批评指正！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Rain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2020/07/03/Mathematical%20model%20series%2003_%E7%81%B0%E8%89%B2%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B%EF%BC%88Gray%20Forecast%20Model%EF%BC%8CGFM%20%EF%BC%89/">http://yoursite.com/2020/07/03/Mathematical%20model%20series%2003_%E7%81%B0%E8%89%B2%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B%EF%BC%88Gray%20Forecast%20Model%EF%BC%8CGFM%20%EF%BC%89/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/07/02/Mathematical%20model%20series%2002_%E5%A4%9A%E5%B1%9E%E6%80%A7%E5%86%B3%E7%AD%96%E6%A8%A1%E5%9E%8B%EF%BC%88Multiple-attribute%20Decision%20Making%20Model)/">Mathematical model series 02_多属性决策模型（Multiple-attribute Decision Making Model)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Rain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
