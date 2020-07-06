@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Rain">
+
+
+    <meta name="subtitle" content="Life is like a box of colorful chocolates, you never know what the next one is.">
+
+
+    <meta name="description" content="There are sunshine, rain, cats and codes in life.">
+
+
+    <meta name="keywords" content="Raincatshine">
+
+
+<title>Mathematical model series 04_图论模型（Dijkstra和Floyd） | Raincatshine&#39;s  Tree Hole</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="Raincatshine's  Tree Hole" type="application/atom+xml">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Raincatshine&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Raincatshine&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Mathematical model series 04_图论模型（Dijkstra和Floyd）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Rain</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 6, 2020&nbsp;&nbsp;19:09:12</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Dijkstra-and-Floyd"><a href="#Dijkstra-and-Floyd" class="headerlink" title="Dijkstra and Floyd"></a>Dijkstra and Floyd</h2><p>title: Mathematical model series 04_图论模型（Dijkstra和Floyd）</p>
+<p>date: 2020-07-06 19:09:12<br>Foreword:</p>
+<hr>
+<p>全国研究生数学建模竞赛由教育部学位办与研究生教育发展中心主办，是学位中心主办的“全国研究生创新实践系列活动”主题赛事之一。</p>
+<p>笔者为了准备该项赛事，特意开设这个数模学习系列，督促个人学习。</p>
+<h2 id="Basic-Information"><a href="#Basic-Information" class="headerlink" title="Basic Information:"></a>Basic Information:</h2><p><strong>图论模型</strong>是指用图论概括建立的模型，是<strong>研究由线连接的点集</strong>的理论。</p>
+<p>该类模型适用于跟地图相关的实际问题，利用地图上各点的衔接性去求解相应的实际性问题，比如<strong>A地到B地的最低车费、最短路程</strong>等。</p>
+<p>本次，我们一次介绍两种图论算法————<strong>Dijkstra 和 Floyd</strong>。</p>
+<ul>
+<li>*<em>Dijkstra *</em></li>
+</ul>
+<p>Dijkstra算法是由Dijkstra于1959年提出，能够求算“地图”上任意一个顶点到另一个顶点的最短路径。</p>
+<p>该算法是一种标号法：给赋权图的每一个顶点记一个数，称为顶点的标号（临时标号，称T标号，或者固定标号，称为P标号）。T标号表示从始顶点到该标点的最短路长的上界；P标号则是从始顶点到该顶点的最短路长。（其实这个最短路长的上界我听着挺懵的，而且他对算法流程的介绍光看文字也很难一下子理清楚，但是结合实例去分析就好很多，所以我们对理论性的内容今天就简单说一下，主要去理解这个算法能够实现的目的）</p>
+<ul>
+<li><strong>Floyd</strong></li>
+</ul>
+<p>Floyd算法是一个经典的动态规划算法，能够寻找从i点到j点的最短路径。</p>
+<p>该算法的过程就是在两点之间的所有点进行搜索，遍历所有的点，通过比较得到最短路径。</p>
+<h2 id="Algorithm-flow"><a href="#Algorithm-flow" class="headerlink" title="Algorithm flow:"></a>Algorithm flow:</h2><ul>
+<li>Dijkstra</li>
+</ul>
+<p>1） 给顶点V1标P标号，d（V1）=0，给顶点Vj（j=2，3，……，n）标T标号d（Vj）=l1j</p>
+<p>2） 在所有T标号中取最小值，譬如，d（Vj0）=l1j0，则把Vj0的T标号改成P标号，并重新计算具有T标号的其他各顶点的T标号：选项Vj的T标号d（Vj）与d（Vj0）+lj0j中较小者作为Vj的新的T标号。</p>
+<p>3） 重复上述步骤，直到目标顶点的标号改成P标号。</p>
+<p>上面这些是小石老师课上给的算法简介，后来我听了他具体的例子之后，就明白了很多，简单来说一下：</p>
+<p><strong>首先</strong>，我们要明确我们的目的，即<strong>从始顶点到终顶点的最短距离</strong>；</p>
+<p><strong>其次</strong>，肯定在任意两点都有不同的权重代表长度，那么我们的任务其实就是，<strong>选出一条路径，使得路径经过的权重值总和最小</strong>。</p>
+<p><strong>同时</strong>，我们规定，<strong>只有我标了固定点的点Vj才有延伸点的资格</strong>，是什么意思呢？比如，初始点A，与他直接相连的点有B、C、D，与B点相连的点有E、F，那么在只规定了A为P的情况下，A点到E、F点的距离就是无穷大，因为他们没有直接接触，但是当我们发现A点到B点的距离最近的时候，我们就可以将B点设为固定点P，那么这个时候<strong>A点到E点的距离=A点到B点的距离+B点到E点的距离</strong>，<strong>A点到F点的距离=A点到B点的距离+B点到F点的距离</strong>，即<em>我们的路径只能经过固定点！</em></p>
+<p><em>经过一个个确定固定点，寻找最短的小路径，最终找到到达终顶点的最短路径，完成算法。</em></p>
+<ul>
+<li>Floyd</li>
+</ul>
+<p>1） 假设<em>Dis（i，j）<em>为节点U到节点V的最短路径的距离，对于每一个节点K，检查</em>Dis（i，k）+Dis（k，j）&lt;Dis（i，j）<em>是否成立，如果成立，则说明i到k再到j的路径比i直接到j的路径短，则设置</em>Dis（i，j）=Dis（i，k）+Dis（k，j）<em>，否则设置</em>Dis（i，j）=Dis（i，j）</em></p>
+<p>2）重复上述操作，直至遍历完所有的节点K</p>
+<h2 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code:"></a>Source code:</h2><ul>
+<li>Dijkstra</li>
+</ul>
+<p>建立函数dijkstra.m</p>
+<pre><code>function [min,path]=dijkstra(w,start,terminal)
+n=size(w,1); label(start)=0; f(start)=start;
+for i=1:n
+   if i~=start
+       label(i)=inf;
+end, end
+s(1)=start; u=start;
+while length(s)&lt;n
+   for i=1:n
+  ins=0;
+  for j=1:length(s)
+     if i==s(j)
+        ins=1;
+     end,  
+  end
+  if ins==0
+     v=i;
+     if label(v)&gt;(label(u)+w(u,v))
+        label(v)=(label(u)+w(u,v)); 
+     f(v)=u;
+         end, 
+      end, 
+   end   
+v1=0;
+   k=inf;
+   for i=1:n
+     ins=0;
+     for j=1:length(s)
+        if i==s(j)
+           ins=1;
+        end, 
+     end
+     if ins==0
+        v=i;
+        if k&gt;label(v)
+           k=label(v);  v1=v;
+        end,  
+     end,  
+   end
+   s(length(s)+1)=v1;  
+   u=v1;
+end
+min=label(terminal); path(1)=terminal;
+i=1; 
+while path(i)~=start
+  path(i+1)=f(path(i));
+  i=i+1 ;
+end
+path(i)=start;
+L=length(path);
+path=path(L:-1:1);</code></pre><p>建立主函数tulunD.m</p>
+<pre><code>disp(&apos;请输入带权邻接矩阵weight（n阶）&apos;);
+weight=input(&apos;weight=&apos;);
+   disp(&apos;请输入起点P和终点F&apos;);
+   P=input(&apos;P=&apos;);
+   F=input(&apos;F=&apos;);
+[dis, path]=dijkstra(weight,P, F)    %P为起始点，E为终点，更改此处即可更改始末点</code></pre><ul>
+<li>Floyd</li>
+</ul>
+<p>建立函数floyd.m</p>
+<pre><code>function [D,path,min1,path1]=floyd(a,start,terminal)
+D=a;n=size(D,1);path=zeros(n,n);
+for i=1:n
+   for j=1:n
+      if D(i,j)~=inf
+         path(i,j)=j;
+  end, 
+   end,
+end
+for k=1:n
+   for i=1:n
+  for j=1:n
+     if D(i,k)+D(k,j)&lt;D(i,j)
+        D(i,j)=D(i,k)+D(k,j);
+        path(i,j)=path(i,k);
+     end, 
+  end, 
+   end,
+end
+if nargin==3
+   min1=D(start,terminal);
+   m(1)=start;
+   i=1;
+   path1=[ ];   
+   while   path(m(i),terminal)~=terminal
+  k=i+1;                                
+  m(k)=path(m(i),terminal);
+  i=i+1;
+   end
+   m(i+1)=terminal;
+   path1=m;
+end   </code></pre><p>建立主函数tulunF.m</p>
+<pre><code>disp(&apos;请输入带权邻接矩阵price（n阶）&apos;);
+price=input(&apos;price=&apos;);
+[D, path]=floyd(price)</code></pre><h2 id="Operation-result-analysis"><a href="#Operation-result-analysis" class="headerlink" title="Operation result analysis:"></a>Operation result analysis:</h2><p>为了体现两个算法的异同，我们给两个算法<strong>赋予相同的权重邻接矩阵进行最短路径求解</strong>。</p>
+<p>   [0     8   Inf   Inf   Inf   Inf     7     8   Inf   Inf   Inf;</p>
+<p>   Inf     0     3   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf;</p>
+<p>   Inf   Inf     0     5     6   Inf     5   Inf   Inf   Inf   Inf;</p>
+<p>   Inf   Inf   Inf     0     1   Inf   Inf   Inf   Inf   Inf    12;</p>
+<p>   Inf   Inf     6   Inf     0     2   Inf   Inf   Inf   Inf    10;</p>
+<p>   Inf   Inf   Inf   Inf     2     0     9   Inf     3   Inf   Inf;</p>
+<p>   Inf   Inf   Inf   Inf   Inf     9     0   Inf   Inf   Inf   Inf;</p>
+<p>   8   Inf   Inf   Inf   Inf   Inf   Inf     0     9   Inf   Inf;</p>
+<p>   Inf   Inf   Inf   Inf     7   Inf   Inf     9     0     2   Inf;</p>
+<p>   Inf   Inf   Inf   Inf   Inf   Inf   Inf   Inf     2     0     2;</p>
+<p>   Inf   Inf   Inf   Inf    10   Inf   Inf   Inf   Inf   Inf     0;];</p>
+<p>注：其中inf代表无穷大，即不直接接触的两点。</p>
+<ul>
+<li>Floyd</li>
+</ul>
+<p><img src="http://m.qpic.cn/psc?/V12ymZUK0yuzbf/S8ACDDjQaRqj9S24Z8034Z5H2HpSRv8gf4bNpz.KbXbmFMBjhQWs4P.27rYob3PNM9CuzjD7M1F*nC0UFuKQ2A!!/b&bo=QQJcAQAAAAADBzw!&rf=viewer_4" alt=""></p>
+<p><img src="http://m.qpic.cn/psc?/V12ymZUK0yuzbf/YWvjNfAyIVey1fwA2tD8GMNAw.tdpaHnD5cdxZXrQ2PC5DmM2E0PNu9s7XSBT9WRAPjCx7PqO1b0Fcn0dZ4aJUK53PcHnhzn2loZ*T3*cgo!/b&bo=DgKwAgAAAAADF4w!&rf=viewer_4" alt=""></p>
+<p>我们分析该算法的结果：</p>
+<p>其中输出D矩阵是权重矩阵，path为路径。此次，我们寻找的是第1个节点到第11个节点的最短路径。则在path矩阵中找到[1,11]位置，为数字8，说明想要到达11必须先经过8，随后我们找到[1,8]位置，为数字9，说明想要到达11必须经过8→9，找到[1,9]位置，为数字10，找到[1,10]位置，为数字11，则说明此时到达目的地。</p>
+<p>综上，<strong>该算法找到的最短路径为1→8→9→10→11</strong>，<strong>对应的距离权重为D矩阵中[1,11]位置上的值，即21</strong>（此处，小石老师上课好像是说错了，他说的是所经过的所有位置上的权重和，也就是D(1，11)+D(8,11)+D(9,11)+D(10,11)=21+13+4+2=40，这是错的）</p>
+<ul>
+<li>Dijkstra</li>
+</ul>
+<p><img src="http://m.qpic.cn/psc?/V12ymZUK0yuzbf/YWvjNfAyIVey1fwA2tD8GFArOhGOokRk*wVjlwmhUzu2BejDDmPP338XY1BnWNFvs2XQ3EE2wO7vPMwnL31m.JCCGgc9ZE.hEwZtKZWfibQ!/b&bo=QgJ*AQAAAAADFww!&rf=viewer_4" alt=""></p>
+<p><img src="http://m.qpic.cn/psc?/V12ymZUK0yuzbf/YWvjNfAyIVey1fwA2tD8GPukl7*FgmWe4PJy7Moe4tLtViELryHqApu6Ucx.mr1znnVBeKc59eXtMZspGK0sCI6IpjhxfK5p.mwFWgiw9tU!/b&bo=dAHKAAAAAAADF40!&rf=viewer_4" alt=""></p>
+<p>这个算法可以求解矩阵内任意两点之间的最短距离，只需要改变键入的P和F值即可，同时，路径和距离都直接给出，免去了我们自行寻找的过程！（没啥好分析的了，就很直白，就很棒~）</p>
+<p>至此，图论模型的算法的初步认识就结束啦~<br>Tags:</p>
+<hr>
+<p>*<em>Matlab2016b，Mathematical model，Dijkstra and Floyd *</em></p>
+<h2 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h2><p><strong>本文所有内容均来自笔者对于小石老师关于数学建模课程的学习笔记，如有需要，请自行购买课程</strong></p>
+<p>如有错误，欢迎大家批评指正！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Rain</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2020/07/06/Mathematical%20model%20series%2004_%E5%9B%BE%E8%AE%BA%E6%A8%A1%E5%9E%8B%EF%BC%88Dijkstra%E5%92%8CFloyd%EF%BC%89/">http://yoursite.com/2020/07/06/Mathematical%20model%20series%2004_%E5%9B%BE%E8%AE%BA%E6%A8%A1%E5%9E%8B%EF%BC%88Dijkstra%E5%92%8CFloyd%EF%BC%89/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/07/03/Mathematical%20model%20series%2003_%E7%81%B0%E8%89%B2%E9%A2%84%E6%B5%8B%E6%A8%A1%E5%9E%8B%EF%BC%88Gray%20Forecast%20Model%EF%BC%8CGFM%20%EF%BC%89/">Mathematical model series 03_灰色预测模型（Gray Forecast Model，GFM ）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Rain | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
